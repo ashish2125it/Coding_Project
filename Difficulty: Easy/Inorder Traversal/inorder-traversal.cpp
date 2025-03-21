@@ -17,6 +17,7 @@ class Node {
 
 
 // } Driver Code Ends
+
 /*
 // Tree Node
 class Node {
@@ -37,20 +38,49 @@ class Node {
 class Solution {
   public:
     // Function to return a list containing the inorder traversal of the tree.
-    void solve(Node* root,vector<int>&ans)
-    {
-        if(!root) return ;
-        
-        solve(root->left,ans);
-        ans.push_back(root->data);
-        solve(root->right,ans);
-    }
     vector<int> inOrder(Node* root) {
-    vector<int>ans;
-    solve(root,ans);
-    return ans;
+       
+    vector<int>inorder;
+    if(!root) return inorder;
+    
+    Node* curr = root;
+    
+    while(curr)
+    {
+        if(curr->left==NULL)
+        {
+            inorder.push_back(curr->data);
+            curr = curr->right;
+        }
+        else
+        {
+            Node* prev = curr->left;
+            while(prev && prev->right && prev->right!=curr)
+            {
+                prev = prev->right;
+            }
+            
+            if(prev->right==NULL) // make a pointer
+            {
+                 prev->right = curr;
+                 curr = curr->left;
+            }
+            else // cut the link 
+            {
+                prev->right = NULL;
+                inorder.push_back(curr->data);
+                curr = curr->right;
+            }
+        }
+    }
+    
+    
+    return inorder;
+       
+       
     }
 };
+
 
 //{ Driver Code Starts.
 
