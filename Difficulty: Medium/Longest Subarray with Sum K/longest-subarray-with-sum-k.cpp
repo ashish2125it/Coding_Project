@@ -2,20 +2,20 @@ class Solution {
   public:
     int longestSubarray(vector<int>& arr, int k) {
     int n = arr.size();
-    unordered_map<int,int>mp;
-    mp[0] = -1;
     int sum=0;
+    unordered_map<int,int>mp;
+    int i=0,j=0;
     int ans=0;
-    for(int i=0;i<n;i++)
+    mp[0]= -1;
+    while(j<n)
     {
-        sum += arr[i];
+        sum+=arr[j];
         if(mp.find(sum-k)!=mp.end())
-        {
-            ans = max(ans,i-mp[sum-k]);
-        }
-        if(mp.find(sum)==mp.end())
-        mp[sum] = i;
+        ans = max(ans,j-mp[sum-k]);
         
+        if(mp.find(sum)==mp.end())
+        mp[sum] = j;
+        j++;
     }
     return ans;
         
