@@ -1,28 +1,38 @@
 class Solution {
-  public: 
-    void dfs(int src,vector<int>&vis,unordered_map<int,vector<int>>&mp,vector<int>&ans)
+  public:
+    void solve(int src,vector<int>&vis,vector<vector<int>>&adj,vector<int>&ans)
     {
-        vis[src] = 1;
-        ans.push_back(src);
-        for(auto it:mp[src])
-        {
-            if(vis[it]==0)
-            dfs(it,vis,mp,ans);
-        }
+          vis[src] = 1;
+          ans.push_back(src);
+          
+          vector<int>ne = adj[src];
+          for(int j=0;j<ne.size();j++)
+          {
+              if(vis[ne[j]]==0)
+              {
+                  solve(ne[j],vis,adj,ans);
+              }
+          }
+          
     }
     vector<int> dfs(vector<vector<int>>& adj) {
-    vector<int>ans;
+    
     unordered_map<int,vector<int>>mp;
-    for(int i=0;i<adj.size();i++)
-    {
-        for(int j=0;j<adj[i].size();j++)
-        {
-            mp[i].push_back(adj[i][j]);
-            mp[adj[i][j]].push_back(i);
-        }
-    }
-    vector<int>vis(adj.size()+1,0);
-    dfs(0,vis,mp,ans);
-    return ans;
+    // for(int i=0;i<adj.size();i++)
+    // {
+    //     for(int j=0;j<adj[i].size();j++)
+    //     {
+    //         int src = i;
+    //         int dest = adj[i][j];
+    //         mp[src].push_back(dest);
+    //         mp[dest].push_back(src);
+            
+    //     }
+        vector<int>vis(adj.size());
+        vector<int>ans;
+        solve(0,vis,adj,ans);
+        return ans;
+    
+        
     }
 };
