@@ -1,46 +1,48 @@
 class Solution {
-public:
-    void dfs(int src, vector<int>& vis, vector<int>& temp,
-             unordered_map<int, vector<int>>& mp)
+  public:
+   void solve(int src,vector<int>&vis,unordered_map<int,vector<int>>&mp,vector<int>&ans)
     {
-        vis[src] = 1;
-        temp.push_back(src);
-
-        for (auto it : mp[src])
-        {
-            if (vis[it] == 0)
-                dfs(it, vis, temp, mp);
-        }
+          vis[src] = 1;
+          ans.push_back(src);
+          
+          vector<int>ne = mp[src];
+          for(int j=0;j<ne.size();j++)
+          {
+              if(vis[ne[j]]==0)
+              {
+                  solve(ne[j],vis,mp,ans);
+              }
+          }
+          
     }
-
-    vector<vector<int>> getComponents(int V, vector<vector<int>>& edges) 
-    {
-        vector<vector<int>> ans;
-        unordered_map<int, vector<int>> mp;
-
-        // Build adjacency list
-        for (int i = 0; i < edges.size(); i++)
-        {
-            mp[edges[i][0]].push_back(edges[i][1]);
-            mp[edges[i][1]].push_back(edges[i][0]);
-        }
-
-        vector<int> vis(V, 0);
-
-        for (int i = 0; i < V; i++)
-        {
-            if (vis[i] == 0)
-            {
-                vector<int> temp;
-                dfs(i, vis, temp, mp);
-
-                sort(temp.begin(), temp.end());   // 🔥 sort component
-                ans.push_back(temp);
-            }
-        }
-
-        sort(ans.begin(), ans.end());   // 🔥 sort all components
-
-        return ans;
+    
+    
+    vector<vector<int>> getComponents(int V, vector<vector<int>>& edges) {
+     vector<vector<int>>ans;
+     
+     vector<int>vis(V,0);
+     
+     unordered_map<int,vector<int>>mp;
+     for(int i=0;i<edges.size();i++)
+     {
+         int src = edges[i][0];
+         int dest = edges[i][1];
+         
+         mp[src].push_back(dest);
+          mp[dest].push_back(src);
+         
+     }
+     for(int i=0;i<V;i++)
+     {
+         if(vis[i]==0)
+         {
+             vector<int>temp;
+             solve(i,vis,mp,temp);
+             ans.push_back(temp);
+         }
+     }
+     return ans;
+     
+        
     }
 };
