@@ -1,45 +1,42 @@
 class Solution {
   public:
-   
-    bool solve(int src,vector<int>&vis,vector<int>&path_vis,unordered_map<int,vector<int>>&mp)
-    {
-        vis[src] = 1;
-        path_vis[src] = 1 ;
-        
-        for(auto child:mp[src])
-        {
-            
-            if(vis[child] && path_vis[child])
-            return true;
-            
-            if(solve(child,vis,path_vis,mp)) return true;
-            
-            
-        }
-        
-        path_vis[src] = 0;
-        return false;
-    }
     bool isCyclic(int V, vector<vector<int>> &edges) {
-    vector<int>vis(V,0);
-    vector<int>path_vis(V,0);
-    int n = edges.size();
+  vector<int>ans;
     unordered_map<int,vector<int>>mp;
-    for(int i=0;i<n;i++)
+    vector<int>indegree(V,0);
+    for(int i=0;i<edges.size();i++)
     {
-        int u  = edges[i][0];
-        int v = edges[i][1];
+         int u = edges[i][0];
+        int v=  edges[i][1];
         mp[u].push_back(v);
+        indegree[v]++;
     }
     
+    queue<int>q;
     for(int i=0;i<V;i++)
     {
-        if(vis[i]==0)
+         if(indegree[i]==0)
+         q.push(i);
+    }
+    
+    while(q.size())
+    {
+        int size = q.size();
+        for(int i=0;i<size;i++)
         {
-            if(solve(i,vis,path_vis,mp)) return true;
+            int node = q.front();
+            q.pop();
+            ans.push_back(node);
+            for(auto Ne:mp[node])
+            {
+                indegree[Ne]--;
+                if(indegree[Ne]==0)
+                q.push(Ne);
+            }
         }
     }
-    return false;
+    
+    return ans.size()!=V;
         
     }
 };
