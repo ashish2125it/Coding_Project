@@ -15,8 +15,7 @@ class Solution {
             mp.erase(arr[i]);
             i++;
         }
-        
-        ans = max(ans,j-i+1);
+        ans= max(ans,j-i+1);
         j++;
     }
     return ans;
